@@ -1,0 +1,178 @@
+# Ultra AI Project - Database Configuration
+
+# Default Database Configuration
+default:
+  engine: "sqlite"
+  database: "./runtime/ultra_ai.db"
+  echo: false
+  pool_size: 5
+  max_overflow: 10
+  pool_timeout: 30
+  pool_recycle: 3600
+  pool_pre_ping: true
+
+# Development Database
+development:
+  engine: "sqlite"
+  database: "./runtime/dev_ultra_ai.db"
+  echo: true
+  pool_size: 5
+  max_overflow: 10
+  
+# Test Database
+test:
+  engine: "sqlite"
+  database: ":memory:"
+  echo: false
+  pool_size: 1
+  max_overflow: 0
+
+# Production Database
+production:
+  engine: "postgresql"
+  host: "${DB_HOST:localhost}"
+  port: "${DB_PORT:5432}"
+  database: "${DB_NAME:ultra_ai_prod}"
+  username: "${DB_USER:ultra_ai}"
+  password: "${DB_PASSWORD}"
+  pool_size: 20
+  max_overflow: 30
+  pool_timeout: 30
+  pool_recycle: 3600
+  pool_pre_ping: true
+  echo: false
+  ssl_mode: "require"
+
+# Redis Configuration
+redis:
+  default:
+    host: "${REDIS_HOST:localhost}"
+    port: "${REDIS_PORT:6379}"
+    db: 0
+    password: "${REDIS_PASSWORD:}"
+    max_connections: 20
+    retry_on_timeout: true
+    socket_timeout: 5
+    socket_connect_timeout: 5
+    health_check_interval: 30
+    
+  cache:
+    host: "${REDIS_HOST:localhost}"
+    port: "${REDIS_PORT:6379}"
+    db: 1
+    password: "${REDIS_PASSWORD:}"
+    max_connections: 10
+    
+  sessions:
+    host: "${REDIS_HOST:localhost}"
+    port: "${REDIS_PORT:6379}"
+    db: 2
+    password: "${REDIS_PASSWORD:}"
+    max_connections: 5
+    
+  tasks:
+    host: "${REDIS_HOST:localhost}"
+    port: "${REDIS_PORT:6379}"
+    db: 3
+    password: "${REDIS_PASSWORD:}"
+    max_connections: 15
+
+# Vector Database Configuration
+vector_db:
+  engine: "chroma"
+  persist_directory: "./runtime/vector_db"
+  collection_name: "ultra_ai_embeddings"
+  distance_metric: "cosine"
+  embedding_dimension: 1536
+  
+  # Alternative: Pinecone
+  pinecone:
+    api_key: "${PINECONE_API_KEY:}"
+    environment: "${PINECONE_ENVIRONMENT:us-west1-gcp}"
+    index_name: "ultra-ai-index"
+    dimension: 1536
+    metric: "cosine"
+    
+  # Alternative: Weaviate
+  weaviate:
+    url: "${WEAVIATE_URL:http://localhost:8080}"
+    api_key: "${WEAVIATE_API_KEY:}"
+    class_name: "UltraAI"
+
+# Database Tables/Collections
+tables:
+  users:
+    table_name: "users"
+    auto_create: true
+    
+  conversations:
+    table_name: "conversations"
+    auto_create: true
+    
+  messages:
+    table_name: "messages"
+    auto_create: true
+    
+  agents:
+    table_name: "agents"
+    auto_create: true
+    
+  tasks:
+    table_name: "tasks"
+    auto_create: true
+    
+  files:
+    table_name: "files"
+    auto_create: true
+    
+  models:
+    table_name: "models"
+    auto_create: true
+    
+  logs:
+    table_name: "logs"
+    auto_create: true
+    
+  metrics:
+    table_name: "metrics"
+    auto_create: true
+
+# Migration Settings
+migrations:
+  directory: "./src/database/migrations"
+  auto_upgrade: true
+  backup_before_upgrade: true
+  version_table: "alembic_version"
+
+# Connection Pooling
+pooling:
+  min_size: 1
+  max_size: 20
+  increment: 1
+  timeout: 30
+  retry_interval: 1
+  max_retries: 3
+
+# Query Optimization
+query:
+  slow_query_threshold: 1.0  # seconds
+  log_slow_queries: true
+  query_cache_size: 1000
+  statement_timeout: 30
+  lock_timeout: 10
+  
+# Backup Configuration
+backup:
+  enabled: true
+  frequency: "daily"  # hourly, daily, weekly
+  retention_days: 30
+  backup_path: "./runtime/backups"
+  compress: true
+  
+# Security Settings
+security:
+  encrypt_sensitive_data: true
+  mask_logs: true
+  connection_encryption: true
+  row_level_security: false
+  audit_trail: true

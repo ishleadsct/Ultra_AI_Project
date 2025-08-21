@@ -1,0 +1,158 @@
+# Ultra AI Project - Main Configuration
+
+# System Configuration
+system:
+  name: "Ultra AI Project"
+  version: "1.0.0"
+  environment: "development"  # development, staging, production
+  debug: true
+  max_workers: 4
+  timeout: 300
+  retry_attempts: 3
+  
+# Server Configuration
+server:
+  host: "127.0.0.1"
+  port: 8000
+  reload: true
+  workers: 1
+  access_log: true
+  log_level: "info"
+  cors_origins:
+    - "http://localhost:3000"
+    - "http://localhost:8080"
+  cors_methods:
+    - "GET"
+    - "POST"
+    - "PUT"
+    - "DELETE"
+    - "OPTIONS"
+  cors_headers:
+    - "Content-Type"
+    - "Authorization"
+    - "X-API-Key"
+
+# API Configuration
+api:
+  prefix: "/api/v1"
+  title: "Ultra AI API"
+  description: "Advanced AI system API with multi-agent capabilities"
+  version: "1.0.0"
+  docs_url: "/docs"
+  redoc_url: "/redoc"
+  openapi_url: "/openapi.json"
+  rate_limit:
+    requests_per_minute: 60
+    burst_size: 10
+  authentication:
+    secret_key: "${SECRET_KEY}"
+    algorithm: "HS256"
+    access_token_expire_minutes: 30
+    refresh_token_expire_days: 7
+
+# WebSocket Configuration
+websocket:
+  path: "/ws"
+  ping_interval: 20
+  ping_timeout: 10
+  max_size: 1048576  # 1MB
+  max_queue: 32
+
+# Security Configuration
+security:
+  allowed_hosts:
+    - "localhost"
+    - "127.0.0.1"
+  ssl_redirect: false
+  force_https: false
+  session_cookie_secure: false
+  csrf_protection: true
+  content_type_nosniff: true
+  x_frame_options: "DENY"
+
+# Cache Configuration
+cache:
+  backend: "redis"
+  ttl: 3600  # 1 hour
+  max_connections: 10
+  retry_on_timeout: true
+
+# File Storage Configuration
+storage:
+  base_path: "./runtime/storage"
+  max_file_size: 104857600  # 100MB
+  allowed_extensions:
+    - ".txt"
+    - ".pdf"
+    - ".doc"
+    - ".docx"
+    - ".jpg"
+    - ".jpeg"
+    - ".png"
+    - ".gif"
+    - ".mp3"
+    - ".wav"
+    - ".mp4"
+    - ".avi"
+  upload_path: "./runtime/uploads"
+  temp_path: "./runtime/temp"
+
+# Task Processing
+tasks:
+  queue_backend: "redis"
+  result_backend: "redis"
+  task_timeout: 600  # 10 minutes
+  max_retries: 3
+  retry_delay: 60  # 1 minute
+  worker_concurrency: 4
+
+# Memory Management
+memory:
+  max_memory_mb: 2048
+  cleanup_interval: 3600  # 1 hour
+  conversation_memory_limit: 100
+  context_window_size: 4096
+  enable_compression: true
+
+# Feature Flags
+features:
+  enable_vision: true
+  enable_audio: true
+  enable_code_execution: true
+  enable_web_browsing: false
+  enable_file_operations: true
+  enable_database_access: true
+  enable_agent_communication: true
+  enable_learning: false
+  enable_plugins: true
+
+# Performance Settings
+performance:
+  async_workers: 4
+  batch_size: 32
+  connection_pool_size: 20
+  query_timeout: 30
+  request_timeout: 60
+  enable_caching: true
+  cache_strategy: "lru"
+  max_cache_size: 1000
+
+# Monitoring & Observability
+monitoring:
+  enable_metrics: true
+  metrics_port: 9090
+  health_check_interval: 30
+  performance_tracking: true
+  error_tracking: true
+  log_requests: true
+  log_responses: false
+  trace_sampling_rate: 0.1
+
+# Development Settings
+development:
+  auto_reload: true
+  debug_toolbar: true
+  profiling: false
+  mock_external_apis: false
+  seed_data: true
+  test_mode: false

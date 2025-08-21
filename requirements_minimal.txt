@@ -1,0 +1,2 @@
+# No external dependencies - using only Python standard library
+# All tools will use built-in modules only for testing

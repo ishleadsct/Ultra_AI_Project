@@ -1,0 +1,283 @@
+# Ultra AI Project - AI Models Configuration
+
+# Default Model Settings
+default:
+  provider: "openai"
+  model: "gpt-4"
+  temperature: 0.7
+  max_tokens: 2048
+  timeout: 60
+  retries: 3
+  
+# OpenAI Configuration
+openai:
+  api_key: "${OPENAI_API_KEY}"
+  organization: "${OPENAI_ORG_ID:}"
+  base_url: "https://api.openai.com/v1"
+  
+  models:
+    gpt4:
+      name: "gpt-4"
+      max_tokens: 8192
+      context_window: 128000
+      cost_per_1k_tokens:
+        input: 0.03
+        output: 0.06
+      capabilities:
+        - "text_generation"
+        - "code_generation"
+        - "reasoning"
+        - "analysis"
+        
+    gpt4_turbo:
+      name: "gpt-4-turbo"
+      max_tokens: 4096
+      context_window: 128000
+      cost_per_1k_tokens:
+        input: 0.01
+        output: 0.03
+      capabilities:
+        - "text_generation"
+        - "code_generation"
+        - "reasoning"
+        - "analysis"
+        
+    gpt35_turbo:
+      name: "gpt-3.5-turbo"
+      max_tokens: 4096
+      context_window: 16385
+      cost_per_1k_tokens:
+        input: 0.001
+        output: 0.002
+      capabilities:
+        - "text_generation"
+        - "code_generation"
+        
+    dalle3:
+      name: "dall-e-3"
+      type: "image_generation"
+      max_resolution: "1024x1024"
+      cost_per_image: 0.04
+      capabilities:
+        - "image_generation"
+        
+    whisper:
+      name: "whisper-1"
+      type: "speech_to_text"
+      cost_per_minute: 0.006
+      capabilities:
+        - "transcription"
+        - "translation"
+        
+    tts:
+      name: "tts-1"
+      type: "text_to_speech"
+      cost_per_1k_chars: 0.015
+      capabilities:
+        - "speech_synthesis"
+
+# Anthropic Configuration
+anthropic:
+  api_key: "${ANTHROPIC_API_KEY}"
+  base_url: "https://api.anthropic.com"
+  
+  models:
+    claude3_opus:
+      name: "claude-3-opus-20240229"
+      max_tokens: 4096
+      context_window: 200000
+      cost_per_1k_tokens:
+        input: 0.015
+        output: 0.075
+      capabilities:
+        - "text_generation"
+        - "code_generation"
+        - "reasoning"
+        - "analysis"
+        - "vision"
+        
+    claude3_sonnet:
+      name: "claude-3-sonnet-20240229"
+      max_tokens: 4096
+      context_window: 200000
+      cost_per_1k_tokens:
+        input: 0.003
+        output: 0.015
+      capabilities:
+        - "text_generation"
+        - "code_generation"
+        - "reasoning"
+        - "analysis"
+        - "vision"
+        
+    claude3_haiku:
+      name: "claude-3-haiku-20240307"
+      max_tokens: 4096
+      context_window: 200000
+      cost_per_1k_tokens:
+        input: 0.00025
+        output: 0.00125
+      capabilities:
+        - "text_generation"
+        - "code_generation"
+
+# Local Models Configuration
+local:
+  enabled: false
+  model_path: "./runtime/models"
+  
+  models:
+    llama2_7b:
+      name: "llama2-7b"
+      model_file: "llama-2-7b-chat.ggmlv3.q4_0.bin"
+      context_window: 4096
+      capabilities:
+        - "text_generation"
+        - "code_generation"
+        
+    codellama:
+      name: "codellama-7b"
+      model_file: "codellama-7b-instruct.ggmlv3.q4_0.bin"
+      context_window: 16384
+      capabilities:
+        - "code_generation"
+        - "code_analysis"
+
+# Hugging Face Configuration
+huggingface:
+  api_key: "${HUGGINGFACE_API_KEY:}"
+  cache_dir: "./runtime/hf_cache"
+  
+  models:
+    embeddings:
+      name: "sentence-transformers/all-MiniLM-L6-v2"
+      max_seq_length: 512
+      embedding_dim: 384
+      capabilities:
+        - "text_embeddings"
+        
+    code_embeddings:
+      name: "microsoft/codebert-base"
+      max_seq_length: 512
+      embedding_dim: 768
+      capabilities:
+        - "code_embeddings"
+
+# Model Router Configuration
+router:
+  strategy: "cost_optimized"  # cost_optimized, performance_optimized, balanced
+  fallback_model: "gpt-3.5-turbo"
+  
+  routing_rules:
+    simple_tasks:
+      models: ["gpt-3.5-turbo", "claude-3-haiku"]
+      criteria:
+        - "token_count < 1000"
+        - "complexity == 'low'"
+        
+    complex_tasks:
+      models: ["gpt-4", "claude-3-opus"]
+      criteria:
+        - "token_count > 2000"
+        - "complexity == 'high'"
+        
+    code_tasks:
+      models: ["gpt-4", "claude-3-sonnet"]
+      criteria:
+        - "task_type == 'code'"
+        
+    vision_tasks:
+      models: ["gpt-4-vision", "claude-3-opus"]
+      criteria:
+        - "has_images == true"
+
+# Model Performance Settings
+performance:
+  concurrent_requests: 5
+  request_timeout: 120
+  retry_delay: 1
+  max_retries: 3
+  circuit_breaker:
+    failure_threshold: 5
+    timeout: 60
+    
+# Rate Limiting
+rate_limits:
+  openai:
+    requests_per_minute: 3500
+    tokens_per_minute: 90000
+    
+  anthropic:
+    requests_per_minute: 50
+    tokens_per_minute: 40000
+    
+  default:
+    requests_per_minute: 100
+    tokens_per_minute: 10000
+
+# Caching Configuration
+caching:
+  enabled: true
+  ttl: 3600  # 1 hour
+  max_cache_size: 1000
+  cache_key_strategy: "content_hash"
+  
+# Content Filtering
+content_filter:
+  enabled: true
+  blocked_content_types:
+    - "harmful"
+    - "illegal"
+    - "adult"
+  moderation_model: "text-moderation-latest"
+  
+# Model Monitoring
+monitoring:
+  track_usage: true
+  track_costs: true
+  track_performance: true
+  alert_thresholds:
+    daily_cost: 100
+    error_rate: 0.05
+    avg_response_time: 10
+
+# Agent-Specific Model Assignments
+agent_models:
+  code_agent:
+    primary: "gpt-4"
+    fallback: "claude-3-sonnet"
+    
+  research_agent:
+    primary: "claude-3-opus"
+    fallback: "gpt-4"
+    
+  creative_agent:
+    primary: "gpt-4"
+    fallback: "claude-3-sonnet"
+    
+  analysis_agent:
+    primary: "claude-3-opus"
+    fallback: "gpt-4"
+
+# Model Fine-tuning
+fine_tuning:
+  enabled: false
+  training_data_path: "./runtime/training_data"
+  model_output_path: "./runtime/fine_tuned_models"
+  
+# Multi-modal Settings
+multimodal:
+  vision:
+    max_image_size: 20971520  # 20MB
+    supported_formats: ["jpg", "jpeg", "png", "gif", "webp"]
+    
+  audio:
+    max_audio_length: 600  # 10 minutes
+    supported_formats: ["mp3", "wav", "m4a", "flac"]
+    
+# Embeddings Configuration
+embeddings:
+  default_model: "text-embedding-ada-002"
+  batch_size: 100
+  dimensions: 1536
+  distance_metric: "cosine"

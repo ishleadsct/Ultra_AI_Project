@@ -1,0 +1,260 @@
+# Ultra AI Project - Logging Configuration
+
+version: 1
+disable_existing_loggers: false
+
+# Formatters
+formatters:
+  standard:
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+    
+  detailed:
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+    
+  json:
+    format: "%(asctime)s"
+    class: "pythonjsonlogger.jsonlogger.JsonFormatter"
+    
+  structured:
+    format: "%(asctime)s | %(levelname)-8s | %(name)-20s | %(funcName)-15s:%(lineno)-4d | %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+    
+  simple:
+    format: "%(levelname)s - %(message)s"
+
+# Handlers
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: structured
+    stream: ext://sys.stdout
+    
+  file_info:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: detailed
+    filename: ./runtime/logs/ultra_ai.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 5
+    encoding: utf8
+    
+  file_error:
+    class: logging.handlers.RotatingFileHandler
+    level: ERROR
+    formatter: detailed
+    filename: ./runtime/logs/error.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 10
+    encoding: utf8
+    
+  file_debug:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: ./runtime/logs/debug.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 3
+    encoding: utf8
+    
+  api_file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: json
+    filename: ./runtime/logs/api.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 7
+    encoding: utf8
+    
+  agent_file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: detailed
+    filename: ./runtime/logs/agents.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 5
+    encoding: utf8
+    
+  security_file:
+    class: logging.handlers.RotatingFileHandler
+    level: WARNING
+    formatter: detailed
+    filename: ./runtime/logs/security.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 10
+    encoding: utf8
+    
+  performance_file:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: json
+    filename: ./runtime/logs/performance.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 3
+    encoding: utf8
+
+# Loggers
+loggers:
+  ultra_ai:
+    level: INFO
+    handlers: [console, file_info, file_error]
+    propagate: false
+    
+  ultra_ai.api:
+    level: INFO
+    handlers: [api_file]
+    propagate: true
+    
+  ultra_ai.agents:
+    level: INFO
+    handlers: [agent_file]
+    propagate: true
+    
+  ultra_ai.security:
+    level: WARNING
+    handlers: [security_file]
+    propagate: true
+    
+  ultra_ai.performance:
+    level: INFO
+    handlers: [performance_file]
+    propagate: true
+    
+  ultra_ai.database:
+    level: WARNING
+    handlers: [file_error]
+    propagate: true
+    
+  ultra_ai.models:
+    level: INFO
+    handlers: [file_info]
+    propagate: true
+    
+  uvicorn:
+    level: INFO
+    handlers: [console]
+    propagate: false
+    
+  uvicorn.access:
+    level: INFO
+    handlers: [api_file]
+    propagate: false
+    
+  fastapi:
+    level: INFO
+    handlers: [api_file]
+    propagate: false
+    
+  sqlalchemy:
+    level: WARNING
+    handlers: [file_error]
+    propagate: false
+    
+  redis:
+    level: WARNING
+    handlers: [file_error]
+    propagate: false
+    
+  celery:
+    level: INFO
+    handlers: [file_info]
+    propagate: false
+    
+  openai:
+    level: WARNING
+    handlers: [file_error]
+    propagate: false
+    
+  anthropic:
+    level: WARNING
+    handlers: [file_error]
+    propagate: false
+
+# Root Logger
+root:
+  level: INFO
+  handlers: [console, file_info, file_error]
+
+# Environment-specific configurations
+development:
+  handlers:
+    console:
+      level: DEBUG
+    file_debug:
+      level: DEBUG
+  loggers:
+    ultra_ai:
+      level: DEBUG
+      handlers: [console, file_debug, file_info, file_error]
+
+production:
+  handlers:
+    console:
+      level: ERROR
+    syslog:
+      class: logging.handlers.SysLogHandler
+      level: INFO
+      formatter: json
+      address: ['localhost', 514]
+  loggers:
+    ultra_ai:
+      level: INFO
+      handlers: [syslog, file_info, file_error]
+
+# Custom Filters
+filters:
+  sensitive_data_filter:
+    class: ultra_ai.utils.logging_filters.SensitiveDataFilter
+    
+  rate_limit_filter:
+    class: ultra_ai.utils.logging_filters.RateLimitFilter
+    max_messages_per_second: 10
+
+# Log Levels by Component
+levels:
+  system: INFO
+  api: INFO
+  agents: INFO
+  models: INFO
+  database: WARNING
+  cache: WARNING
+  security: WARNING
+  performance: INFO
+  debug: DEBUG
+  
+# Structured Logging Settings
+structured:
+  include_timestamp: true
+  include_level: true
+  include_logger_name: true
+  include_function_name: true
+  include_line_number: true
+  include_thread_id: false
+  include_process_id: false
+  
+# Log Rotation Settings
+rotation:
+  max_file_size: "10MB"
+  backup_count: 5
+  rotation_frequency: "daily"
+  compress_backups: true
+  
+# Performance Settings
+performance:
+  async_logging: true
+  buffer_size: 1000
+  flush_interval: 5
+  
+# Security Settings
+security:
+  mask_sensitive_data: true
+  sensitive_patterns:
+    - "password"
+    - "token"
+    - "api_key"
+    - "secret"
+    - "credential"
+  log_failed_attempts: true
+  max_log_level_for_production: "INFO"
