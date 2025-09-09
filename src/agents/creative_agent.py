@@ -1640,6 +1640,8 @@ Make the world feel lived-in, consistent, and rich with detail."""
             if not product_service:
                 raise ValueError("Product or service description is required")
             
+            copy_prompt = f"""Create marketing copy for: {product_service}
+
 Marketing Parameters:
 - Target Audience: {target_audience}
 - Copy Type: {copy_type}
@@ -1740,7 +1742,7 @@ Marketing Copy Guidelines:
             # Optimize character library
             await self._optimize_character_library()
             
-except Exception as e:
+        except Exception as e:
             logger.error(f"Creative agent maintenance failed: {e}")
     
     async def _update_writing_statistics(self):
@@ -2158,17 +2160,15 @@ except Exception as e:
                 ])
             
             # Generate inspiration prompt
-            inspiration_prompt = f"""Provide creative inspiration for writing about "{topic}" in {style} style.
-
-Include:
-1. Unique angles or perspectives to explore
-2. Interesting character concepts
-3. Potential conflicts or tensions
-4. Atmospheric details and settings
-5. Themes worth exploring
-6. Creative techniques to try
-
-Make the suggestions specific and actionable."""
+            inspiration_prompt = f"Provide creative inspiration for writing about '{topic}' in {style} style.\n\n"
+            inspiration_prompt += "Include:\n"
+            inspiration_prompt += "1. Unique angles or perspectives to explore\n"
+            inspiration_prompt += "2. Interesting character concepts\n"
+            inspiration_prompt += "3. Potential conflicts or tensions\n"
+            inspiration_prompt += "4. Atmospheric details and settings\n"
+            inspiration_prompt += "5. Themes worth exploring\n"
+            inspiration_prompt += "6. Creative techniques to try\n\n"
+            inspiration_prompt += "Make the suggestions specific and actionable."
             
             # Generate inspiration
             if self.model_manager:

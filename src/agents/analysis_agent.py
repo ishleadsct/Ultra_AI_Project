@@ -290,7 +290,7 @@ class AnalysisAgent(BaseAgent):
         except Exception as e:
             logger.error(f"Failed to load analysis templates: {e}")
     
-async def _initialize_statistical_methods(self):
+    async def _initialize_statistical_methods(self):
         """Initialize statistical analysis methods."""
         try:
             statistical_methods = {

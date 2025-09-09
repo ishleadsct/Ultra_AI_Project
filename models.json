@@ -1,45 +1,47 @@
-
 [
-
   {
-
-    "name": "llama-3.2-1b-instruct-q4_k_m",
-
-    "role": "gatekeeper",
-
-    "fusion_role": "primary_reasoning",
-
-    "filename": "llama-3.2-1b-instruct-q4_k_m.gguf",
-
-    "path": "/storage/emulated/0/AI_Models/.ultra_ai/models/llama-3.2-1b-instruct-q4_k_m.gguf",
-
-    "url": "https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf",
-
-    "size_gb": 0.8,
-
-    "context_length": 131072
-
+    "name": "qwen2",
+    "display_name": "Ultra AI - General Intelligence Core",
+    "filename": "Qwen2-1.5B-Instruct.Q4_K_M.gguf",
+    "path": "/data/data/com.termux/files/home/Ultra_AI_Project/models/gguf/Qwen2-1.5B-Instruct.Q4_K_M.gguf",
+    "size_gb": 0.9,
+    "context_length": 32768,
+    "specialty": "General intelligence and conversation"
   },
-
   {
-
-    "name": "llama-3.2-3b-instruct-q4_k_m", 
-
-    "role": "librarian",
-
-    "fusion_role": "knowledge_management",
-
-    "filename": "llama-3.2-3b-instruct-q4_k_m.gguf",
-
-    "path": "/storage/emulated/0/AI_Models/.ultra_ai/models/llama-3.2-3b-instruct-q4_k_m.gguf",
-
-    "url": "https://huggingface.co/bartowski/Llama-3.2-3B-Instruct-GGUF/resolve/main/Llama-3.2-3B-Instruct-Q4_K_M.gguf",
-
-    "size_gb": 2.0,
-
-    "context_length": 131072
-
+    "name": "phi3",
+    "display_name": "Ultra AI - Reasoning & Analysis Core", 
+    "filename": "Phi-3-mini-4k-instruct-q4.gguf",
+    "path": "/data/data/com.termux/files/home/Ultra_AI_Project/models/gguf/Phi-3-mini-4k-instruct-q4.gguf",
+    "size_gb": 2.3,
+    "context_length": 4096,
+    "specialty": "Reasoning, analysis, and problem-solving"
+  },
+  {
+    "name": "codellama",
+    "display_name": "Ultra AI - Programming Expert Core",
+    "filename": "CodeLlama-7B-Instruct.Q4_K_M.gguf", 
+    "path": "/data/data/com.termux/files/home/Ultra_AI_Project/models/gguf/CodeLlama-7B-Instruct.Q4_K_M.gguf",
+    "size_gb": 3.8,
+    "context_length": 16384,
+    "specialty": "Programming, code generation, and technical solutions"
+  },
+  {
+    "name": "llama3",
+    "display_name": "Ultra AI - Advanced Intelligence Core",
+    "filename": "Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf",
+    "path": "/data/data/com.termux/files/home/Ultra_AI_Project/models/gguf/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf", 
+    "size_gb": 4.6,
+    "context_length": 131072,
+    "specialty": "Advanced reasoning, complex tasks, and multi-turn conversations"
+  },
+  {
+    "name": "deepseek",
+    "display_name": "Ultra AI - Deep Code Analysis Core",
+    "filename": "DeepSeek-Coder-V2-Lite-Instruct-Q4_K_M.gguf",
+    "path": "/data/data/com.termux/files/home/Ultra_AI_Project/models/gguf/DeepSeek-Coder-V2-Lite-Instruct-Q4_K_M.gguf",
+    "size_gb": 9.7,
+    "context_length": 32768,
+    "specialty": "Deep code analysis, software architecture, and complex programming tasks"
   }
-
 ]
-

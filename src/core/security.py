@@ -20,7 +20,7 @@ import re
 from enum import Enum
 
 from ..utils.logger import get_logger
-from ..utils.helpers import generate_session_id
+from ..utils.helpers import generate_task_id as generate_session_id
 
 logger = get_logger(__name__)
 

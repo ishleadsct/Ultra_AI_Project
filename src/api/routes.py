@@ -21,7 +21,7 @@ from ..utils.logger import get_logger
 from ..utils.helpers import load_config, generate_task_id, format_bytes
 from .middleware import setup_middleware
 from .auth import authenticate_request, get_current_user
-from . import (
+from .models import (
     APIResponse, PaginatedResponse, ErrorDetail,
     create_success_response, create_error_response, create_paginated_response,
     API_PREFIX, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE

@@ -124,21 +124,47 @@ class SimpleMessageFormatter(BaseTool):
     
     async def execute(self, **kwargs) -> ToolResult:
         try:
-            text = kwargs.get("text")
+            # Support both 'text' and 'message' parameters for flexibility
+            text = kwargs.get("text") or kwargs.get("message")
+            if not text:
+                return ToolResult(
+                    success=False,
+                    error="No text or message provided"
+                )
+                
             format_type = kwargs.get("format_type", "plain")
+            prefix = kwargs.get("prefix", "")
+            suffix = kwargs.get("suffix", "")
             
+            # Apply formatting
             if format_type == "uppercase":
                 formatted = text.upper()
             elif format_type == "lowercase":
                 formatted = text.lower()
             elif format_type == "title":
                 formatted = text.title()
+            elif format_type == "bold":
+                formatted = f"**{text}**"
+            elif format_type == "italic":
+                formatted = f"*{text}*"
+            elif format_type == "code":
+                formatted = f"`{text}`"
             else:
                 formatted = text
             
+            # Add prefix and suffix
+            if prefix or suffix:
+                formatted = f"{prefix}{formatted}{suffix}"
+            
             return ToolResult(
                 success=True,
-                data={"formatted_text": formatted, "original": text}
+                data={
+                    "formatted_text": formatted, 
+                    "original": text,
+                    "format_type": format_type,
+                    "prefix": prefix,
+                    "suffix": suffix
+                }
             )
             
         except Exception as e:

@@ -28,14 +28,14 @@ from .core.memory_manager import MemoryManager
 # API imports
 from .api.routes import app as api_app
 
-# Agent imports
+# Agent imports - Partially enabled (fixed agents)
 from .agents.base_agent import BaseAgent
-from .agents.code_agent import CodeAgent
 from .agents.research_agent import ResearchAgent
 from .agents.creative_agent import CreativeAgent
-from .agents.analysis_agent import AnalysisAgent
+# from .agents.code_agent import CodeAgent  # Temporarily disabled due to syntax errors
+# from .agents.analysis_agent import AnalysisAgent  # Temporarily disabled due to syntax errors
 
-# Model imports
+# Model imports - Re-enabled after circular import fix
 from .models.model_manager import ModelManager
 from .models.llm_interface import LLMInterface
 
@@ -53,14 +53,14 @@ __all__ = [
     # API
     "api_app",
     
-    # Agents
+    # Agents (partially enabled)
     "BaseAgent",
-    "CodeAgent",
     "ResearchAgent", 
     "CreativeAgent",
-    "AnalysisAgent",
+    # "CodeAgent",     # Temporarily disabled
+    # "AnalysisAgent", # Temporarily disabled
     
-    # Models
+    # Models (re-enabled after circular import fix)
     "ModelManager",
     "LLMInterface",
     

@@ -455,58 +455,70 @@ Please provide:
 
 Code:
 ```{language}
-{code}Please provide:Overall code quality assessment (1-10 scale)Specific issues found (bugs, security vulnerabilities, performance problems)Suggestions for improvementBest practices recommendationsCode complexity assessmentBe thorough but constructive in your feedback."""# Generate review using LLM
-        if not self.model_manager:
-            raise ValueError("Model manager not available")
-        
-        response = await self.model_manager.generate_completion(
-            prompt=prompt,
-            temperature=0.2,
-            max_tokens=1500
-        )
-        
-        if not response.success:
-            raise ValueError(f"Code review failed: {response.error}")
-        
-        review_text = response.content
-        
-        # Parse review into structured format
-        review_result = self._parse_review_response(review_text)
-        
-        result = {
-            "code": code,
-            "language": language,
-            "analysis": analysis.__dict__,
-            "review": review_result,
-            "focus_areas": focus_areas,
-            "timestamp": datetime.now().isoformat()
-        }
-        
-        # Store review in memory
-        await self.store_memory(
-            content=result,
-            memory_type="code_review",
-            importance=2.5,
-            tags=["code_review", language] + focus_areas
-        )
-        
-        return result
-        
-    except Exception as e:
-        logger.error(f"Code review failed: {e}")
-        raise
+{code}
+```
 
-def _parse_review_response(self, review_text: str) -> Dict[str, Any]:
-    """Parse LLM review response into structured format."""
-    # This is a simplified parser - could be enhanced with more sophisticated NLP
-    lines = review_text.split('\n')
-    
-    review = {
-        "quality_score": 7,  # Default
-        "issues": [],
-        "suggestions": [],
-        "summary": "",
-    }
+Please provide:
+- Overall code quality assessment (1-10 scale)
+- Specific issues found (bugs, security vulnerabilities, performance problems)
+- Suggestions for improvement
+- Best practices recommendations
+- Code complexity assessment
+
+Be thorough but constructive in your feedback."""
+
+            # Generate review using LLM
+            if not self.model_manager:
+                raise ValueError("Model manager not available")
+            
+            response = await self.model_manager.generate_completion(
+                prompt=prompt,
+                temperature=0.2,
+                max_tokens=1500
+            )
+            
+            if not response.success:
+                raise ValueError(f"Code review failed: {response.error}")
+            
+            review_text = response.content
+            
+            # Parse review into structured format
+            review_result = self._parse_review_response(review_text)
+            
+            result = {
+                "code": code,
+                "language": language,
+                "analysis": analysis.__dict__,
+                "review": review_result,
+                "focus_areas": focus_areas,
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            # Store review in memory
+            await self.store_memory(
+                content=result,
+                memory_type="code_review",
+                importance=2.5,
+                tags=["code_review", language] + focus_areas
+            )
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Code review failed: {e}")
+            raise
+
+    def _parse_review_response(self, review_text: str) -> Dict[str, Any]:
+        """Parse LLM review response into structured format."""
+        # This is a simplified parser - could be enhanced with more sophisticated NLP
+        lines = review_text.split('\n')
+        
+        review = {
+            "quality_score": 7,  # Default
+            "issues": [],
+            "suggestions": [],
+            "summary": "",
+        }
     
     current_section = None
     

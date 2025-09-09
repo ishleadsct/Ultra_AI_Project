@@ -48,3 +48,4 @@ backup_tools/
 # Broken requirements
 requirements_broken.txt
 requirements_full.txt
+models/gguf/*.gguf

@@ -18,7 +18,7 @@ import sqlite3
 from collections import defaultdict, OrderedDict
 
 from ..utils.logger import get_logger
-from ..utils.helpers import generate_memory_id, sanitize_string
+from ..utils.helpers import generate_task_id, sanitize_string
 
 logger = get_logger(__name__)
 
@@ -232,7 +232,7 @@ class MemoryManager:
             logger.error(f"Database initialization failed: {e}")
             raise
 
-async def _load_memory_items(self):
+    async def _load_memory_items(self):
         """Load existing memory items from database."""
         try:
             if not self.db_connection:
@@ -334,7 +334,7 @@ async def _load_memory_items(self):
                           tags: Optional[List[str]] = None) -> str:
         """Store a new memory item."""
         
-        memory_id = generate_memory_id()
+        memory_id = generate_task_id()
         expires_at = None
         if expires_in:
             expires_at = datetime.now() + timedelta(seconds=expires_in)
@@ -392,8 +392,8 @@ async def _load_memory_items(self):
             ))
             
             self.db_connection.commit()
-
-except Exception as e:
+            
+        except Exception as e:
             logger.error(f"Failed to save memory item {item.id}: {e}")
     
     async def retrieve_memory(self, memory_id: str) -> Optional[MemoryItem]:

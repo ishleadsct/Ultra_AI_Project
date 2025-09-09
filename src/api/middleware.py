@@ -16,7 +16,7 @@ import re
 from urllib.parse import urlparse
 
 from fastapi import FastAPI, Request, Response, HTTPException
-from fastapi.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
@@ -24,9 +24,19 @@ from starlette.responses import JSONResponse
 import httpx
 
 from ..utils.logger import get_logger
-from . import create_error_response
 
 logger = get_logger(__name__)
+
+# Local error response function to avoid circular imports
+def create_error_response(message: str = "An error occurred", errors=None):
+    """Create an error response locally to avoid circular imports."""
+    from datetime import datetime
+    return {
+        "status": "error",
+        "message": message,
+        "errors": errors,
+        "timestamp": datetime.now().isoformat()
+    }
 
 class RequestIDMiddleware(BaseHTTPMiddleware):
     """Add unique request ID to each request."""

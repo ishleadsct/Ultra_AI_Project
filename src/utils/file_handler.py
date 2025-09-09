@@ -24,7 +24,7 @@ from PIL import Image
 import fitz  # PyMuPDF for PDF processing
 
 from .logger import get_logger
-from .helpers import sanitize_string, format_bytes, generate_file_id
+from .helpers import sanitize_string, generate_task_id as generate_file_id
 
 logger = get_logger(__name__)
 

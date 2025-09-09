@@ -866,7 +866,7 @@ Identify and categorize:
 
 Format as categories with lists."""
 
-if not self.model_manager:
+            if not self.model_manager:
                 return {"entities": ["Entity extraction not available"]}
             
             response = await self.model_manager.generate_completion(
@@ -1759,7 +1759,10 @@ Present the synthesis as if consulting multiple experts on this topic."""
             if entities_to_remove:
                 logger.debug(f"Compressed knowledge graph: removed {len(entities_to_remove)} entities")
                 
-async def _cleanup_research_sessions(self):
+        except Exception as e:
+            logger.error(f"Knowledge graph compression failed: {e}")
+    
+    async def _cleanup_research_sessions(self):
         """Clean up old research sessions."""
         try:
             # Keep only recent sessions (last 30 days)

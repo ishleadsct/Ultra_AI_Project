@@ -18,10 +18,10 @@ Version: 1.0.0
 """
 
 from .base_agent import BaseAgent, AgentConfig, AgentStatus, AgentCapability
-from .code_agent import CodeAgent
+# from .code_agent import CodeAgent  # Temporarily disabled due to syntax errors
 from .research_agent import ResearchAgent
 from .creative_agent import CreativeAgent
-from .analysis_agent import AnalysisAgent
+# from .analysis_agent import AnalysisAgent  # Temporarily disabled due to syntax errors
 
 __all__ = [
     # Base Agent
@@ -68,12 +68,12 @@ class MessageType(Enum):
     RESOURCE_REQUEST = "resource_request"
     RESOURCE_RESPONSE = "resource_response"
 
-# Agent registry for dynamic discovery
+# Agent registry for dynamic discovery (partially enabled)
 AGENT_REGISTRY: Dict[str, type] = {
-    "code": CodeAgent,
+    # "code": CodeAgent,        # Temporarily disabled
     "research": ResearchAgent,
     "creative": CreativeAgent,
-    "analysis": AnalysisAgent,
+    # "analysis": AnalysisAgent,  # Temporarily disabled
 }
 
 # Default agent configurations
